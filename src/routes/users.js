@@ -27,24 +27,38 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
+router.post('/users/logout', auth, async (req, res) => {
+    const user = req.user
+    const token = req.token
+
+    try {
+        user.tokens = user.tokens.filter((item) => item.token !== token)
+        await user.save()
+        res.status(204).send()
+    } catch (error) {
+        console.log(error)
+        res.status(400).send()
+    }
+})
+
+router.post('/users/logoutall', auth, async (req, res) => {
+    const user = req.user
+
+    try {
+        user.tokens = []
+        await user.save()
+        res.status(204).send()
+    } catch (error) {
+        console.log(error)
+        res.status(400).send()
+    }
+})
+
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
-router.get('/users/:id', auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id)
-        if (!user) {
-            return res.status(404).send()
-        }
-        res.send(user)
-    } catch (error) {
-        console.log(error)
-        res.status(400).send('Error!')
-    }
-})
-
-router.patch('/users/:id', auth, async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     const allowedUpdates = ['name', 'age', 'password', 'email']
     const updates = Object.keys(req.body)
     const isValidOperation = updates.every((item) => allowedUpdates.includes(item))
@@ -53,11 +67,7 @@ router.patch('/users/:id', auth, async (req, res) => {
     }
 
     try {
-        const user = await User.findById(req.params.id)
-
-        if (!user) {
-            return res.status(404).send()
-        }
+        const user = req.user
 
         updates.forEach((update) => user[update] = req.body[update])
         await user.save()
@@ -69,13 +79,9 @@ router.patch('/users/:id', auth, async (req, res) => {
     }
 })
 
-router.delete('/users/:id', auth, async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
-
-        if (!user) {
-            return res.status(404).send()
-        }
+        req.user.remove()
         res.status(204).send()
     } catch (error) {
         console.log(error)

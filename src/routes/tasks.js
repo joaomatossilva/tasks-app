@@ -1,10 +1,14 @@
 const express = require('express')
 const Task = require('../models/task.js')
+const auth = require('../middleware/auth.js')
 
 const router = new express.Router()
 
-router.post('/tasks', async (req, res) => {
-    const task = new Task(req.body)
+router.post('/tasks', auth, async (req, res) => {
+    const task = new Task({
+        ...req.body,
+        userId: req.user._id
+    })
 
     try{
         await task.save()
@@ -15,9 +19,9 @@ router.post('/tasks', async (req, res) => {
     }
 })
 
-router.get('/tasks', async (req, res) => {
+router.get('/tasks', auth, async (req, res) => {
     try {
-        const tasks = await Task.find({})
+        const tasks = await Task.find({userId: req.user._id})
         res.send(tasks)
     } catch (error) {
         console.log(error)
@@ -25,22 +29,20 @@ router.get('/tasks', async (req, res) => {
     }
 })
 
-router.get('/tasks/:id', async (req, res) => {
+router.get('/tasks/:id', auth, async (req, res) => {
     try {
-        var task = await Task.findById(req.params.id)
+        const task = await Task.findOne({ _id:req.params.id, userId: req.user._id})
         if (!task) {
             return res.status(404).send()
         }
-        console.log(task)
         res.send(task)
     } catch (error) {
-        console.log('hitting here')
         console.log(error)
         res.status(400).send(error)
     }
 })
 
-router.patch('/tasks/:id', async (req, res) => {
+router.patch('/tasks/:id', auth, async (req, res) => {
     const allowedUpdates = ['description', 'completed']
     const updates = Object.keys(req.body)
     const isValidOperation = updates.every((item) => allowedUpdates.includes(item))
@@ -50,7 +52,7 @@ router.patch('/tasks/:id', async (req, res) => {
 
 
     try {
-        const task = await Task.findById(req.params.id)
+        const task = await Task.findOne({ _id:req.params.id, userId: req.user._id})
         
         if (!task) {
             return res.status(404).send()
@@ -61,15 +63,14 @@ router.patch('/tasks/:id', async (req, res) => {
 
         res.send(task)
     } catch (error) {
-        console.log('hitting here')
         console.log(error)
         res.status(400).send(error)
     }
 })
 
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', auth, async (req, res) => {
     try {
-        var task = await Task.findByIdAndDelete(req.params.id)
+        var task = await Task.findOneAndDelete({ _id: req.params.id, userId: req.user._id})
         if (!task) {
             return res.status(404).send()
         }
