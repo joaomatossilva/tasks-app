@@ -431,6 +431,92 @@
 			"response": []
 		},
 		{
+			"name": "Get Avatar",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTU0MzU2NjQ3OTRkNDI5OTAwODQxOTQiLCJuYW1lIjoiSm9hbyBNYXRvcyBTaWx2YSIsImVtYWlsIjoiam9hb0Brc3BhY2UucHQiLCJpYXQiOjE1ODI1NzY5OTgsImV4cCI6MTU4MjY2MzM5OH0.-yhk2jxiV2QRB5KBJdKmUMpuZfF3zHrPdu01haEIYd4",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/users/5e5445ea5fb3a307c455f40f/avatar",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"5e5445ea5fb3a307c455f40f",
+						"avatar"
+					]
+				},
+				"description": "Create user"
+			},
+			"response": []
+		},
+		{
+			"name": "Set Avatar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "multipart/form-data",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTU0MzU2NjQ3OTRkNDI5OTAwODQxOTQiLCJuYW1lIjoiSm9hbyBNYXRvcyBTaWx2YSIsImVtYWlsIjoiam9hb0Brc3BhY2UucHQiLCJpYXQiOjE1ODI1NzY5OTgsImV4cCI6MTU4MjY2MzM5OH0.-yhk2jxiV2QRB5KBJdKmUMpuZfF3zHrPdu01haEIYd4",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": "/C:/temp/node-course-images/profile-pic.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/users/me/avatar",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"me",
+						"avatar"
+					]
+				},
+				"description": "Create user"
+			},
+			"response": []
+		},
+		{
 			"name": "Delete User",
 			"request": {
 				"method": "DELETE",
@@ -455,6 +541,38 @@
 					"path": [
 						"users",
 						"me"
+					]
+				},
+				"description": "Create user"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Avatar",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/users/me/avatar",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"me",
+						"avatar"
 					]
 				},
 				"description": "Create user"
