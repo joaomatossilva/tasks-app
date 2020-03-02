@@ -23,7 +23,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "env-cmd -f ./conf/dev.env nodemon src/index.js",
-    "test": "env-cmd -f ./conf/test.env jest --watch"
+    "test": "env-cmd -f ./conf/test.env jest --watch --runInBand"
   },
   "jest":{
     "testEnvironment": "node"
