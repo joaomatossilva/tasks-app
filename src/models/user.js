@@ -72,7 +72,8 @@ schema.statics.findByCredentials = async (email, password) => {
 schema.methods.generateAuthToken = async function() {
     const user = this
     var { _id, name, email } = user
-    var token = jwt.sign({ _id: _id.toString(), name, email}, 'my-super-duper-private-key', { expiresIn: '1 day'})
+    const AUTH_SECRET = process.env.AUTH_SECRET
+    var token = jwt.sign({ _id: _id.toString(), name, email}, AUTH_SECRET, { expiresIn: '1 day'})
     
     user.tokens = user.tokens.concat({ token })
     await user.save()

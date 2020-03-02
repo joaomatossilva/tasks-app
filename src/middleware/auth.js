@@ -5,9 +5,9 @@ const auth = async (req, res, next) => {
 
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
-        console.log(token)
 
-        const decoded = jwt.verify(token, 'my-super-duper-private-key')
+        const AUTH_SECRET = process.env.AUTH_SECRET
+        const decoded = jwt.verify(token, AUTH_SECRET)
         
         //validate if the token has been revoked
         const user = await User.findOne({ _id: decoded._id , 'tokens.token': token})
